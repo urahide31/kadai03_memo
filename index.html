@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>チンチロリンチャレンジ</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+</head>
+<body>
+<header>
+<h1>チンチロリンチャレンジ</h1>
+</header>
+
+<main style="display: none;">
+    <div class="flex">
+        <button class="button" id="dicebutton">チンチロリン♪</button>
+    </div>
+    <div class="diceimg">
+        <table id="dicearea">
+            <tr><td class="dicerow" id="dice1"></td><td class="dicerow" id="dice2"></td></tr>
+        </table>
+        <div>
+            <p class="resultarea" id="resultimg"></p>
+        </div>
+    </div>
+    <div class="historyarea">
+        <p class="sectiontitle">本日のチンチロリン履歴♪</p>
+        <table id="history">
+
+        </table>
+    </div>
+    <!-- <img src="" alt="">
+    <input type="text" id="key">
+    <textarea  id="memo"></textarea>
+    <ul>
+        <li id="save">Save</li>
+        <li id="clear">Clear</li>
+    </ul> -->
+</main>
+<!-- <table id="list">
+ここに追加データが挿入される
+</table> -->
+
+<script>
+const dice = [1,2,3,4,5,6];
+const imgtag = '<img src="../img/" alt="">'
+let history = new Array;
+// サイコロ画像を配列で定義しておく
+const diceimg = new Array;
+diceimg[0] = '<img src="../img/diceimg1.png" alt="1">';
+diceimg[1] = '<img src="../img/diceimg2.png" alt="2">';
+diceimg[2] = '<img src="../img/diceimg3.png" alt="3">';
+diceimg[3] = '<img src="../img/diceimg4.png" alt="4">';
+diceimg[4] = '<img src="../img/diceimg5.png" alt="5">';
+diceimg[5] = '<img src="../img/diceimg6.png" alt="6">';
+const rank = ['伝説の勝負師','ザ・ギャンブラー','ビギナークラス'];
+
+// サイコロを振る関数
+function playdice() {
+    let r = Math.floor(Math.random()*6);
+    let resultdice = dice[r];
+    return resultdice;
+    }
+
+// 判定関数
+function judgement(a,b){
+    let j;
+    if(a==b && a==1){ //ゾロ目（１）
+        j = '大当たり！メガ１杯無料！';
+        localStorage.setItem('megatimes',parseInt(localStorage.getItem('megatimes'))+1);
+    } else if(a==b){ //ゾロ目（１以外）
+        j = '当たり！１杯無料！';
+    } else if((a+b)%2==1){ //奇数
+        j = '倍額倍量！';
+    } else { //偶数
+        j = '1杯半額！';
+    }
+    return j;
+}
+
+// 会員ランク取得
+function getrank(){
+    let a = parseInt(localStorage.getItem("megatimes"));
+    console.log(a)
+    let r;
+    if(a>9){
+        r = rank[0];
+    } else if(a>4){
+        r = rank[1];
+    } else{
+        r = rank[2];
+    }
+    return r;
+}
+
+    $("main").slideDown(500);
+//1.サイコロを振る クリックイベント
+    $("#dicebutton").on("click",function(){
+        let result1 = playdice(); //サイコロ1つ目
+        let result2 = playdice(); //サイコロ2つ目
+        let j = judgement(result1,result2); //結果判定：サイコロの目を引数として渡す
+
+        $("#dice1").html(diceimg[result1-1]).hide().fadeIn(1000);//サイコロの目1を表示
+        $("#dice2").html(diceimg[result2-1]).hide().fadeIn(1000);//サイコロの目2を表示
+        $("#resultimg").html(j).hide().fadeIn(3000);//結果発表
+
+        // 配列に今回の結果をセット
+        history.unshift(`${j}___サイコロの目は${result1}と${result2}でした`);
+        const historyhtml = '<tr><td>'+history[0]+'</td></tr>';
+        $("#history").prepend(historyhtml);
+        let currentrank = getrank();
+        console.log(currentrank);
+        // console.log(history);
+        // for(let i=0; i<history.length; i++){
+        //     const historyhtml = '<tr><td>'+history[i]+'</td></tr>';
+        //     $("#history").append(historyhtml);
+        //     // $("#history").append(historyhtml);
+        //     console.log(historyhtml);
+        // }
+        
+
+        // LocalStorageに大当たり回数を加算
+        // ステータス判定
+        // ステータス判定を更新
+        // const key = $("#key").val();
+        // const value = $("#memo").val();
+        // localStorage.setItem(key,value);
+        // const html = '<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+        // $("#list").append(html);
+        // alert("保存しました");
+    });
+
+
+
+
+
+//2.clear クリックイベント
+    // $("#clear").on("click",function(){
+    //     localStorage.clear();
+    //     $("#list").empty();
+    //     alert("削除しました");
+    // });
+
+
+
+
+//3.ページ読み込み：保存データ取得表示
+// for(i=0; i<localStorage.length; i++){
+//     const key = localStorage.key(i);
+//     const value = localStorage.getItem(key);
+//     const html = '<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+//     $("#list").append(html);
+// }
+
+
+
+
+</script>
+<footer><small>Respect to 串カツ田中</small></footer>
+</body>
+</html>
