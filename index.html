@@ -39,8 +39,10 @@
     <div class="historyarea">
         <p class="sectiontitle">本日のチンチロリン履歴♪</p>
         <table id="history">
-
         </table>
+    </div>
+    <div class="flex">
+        <button class="button" id="reset">会員ランクをリセット</button>
     </div>
     <!-- <img src="" alt="">
     <input type="text" id="key">
@@ -123,6 +125,12 @@ function getrank(){
         $("#history").prepend(historyhtml);
         let currentrank = getrank();
         $("#rank").html(currentrank)
+
+        // LocalStorageを初期化する
+        $("#reset").on("click",function(){
+            localStorage.clear();
+            $("#rank").empty();
+        })
         // console.log(currentrank);
         // console.log(history);
         // for(let i=0; i<history.length; i++){
