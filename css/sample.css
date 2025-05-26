@@ -115,3 +115,12 @@ td{
 .button:hover{
     opacity: 0.6;
 }
+.title{
+    font-size: 32px;
+    color: #0d7dfd;
+}
+
+.headertext{
+    height: fit-content;
+    font-size: 16px;
+}
