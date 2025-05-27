@@ -30,6 +30,7 @@
     <div class="rankarea">
         <p class="sectiontitle">あなたの会員ランク</p>
         <p class="sectiontitle" id="rank"></p>
+        <p class="sectiontitle" id="meganow"></p>
         <p class="sectiontitle">会員ランクとは？</p>
         <p class="headertext">１のゾロ目の累計回数によってランクが決まります</p>
         <p class="headertext">10回以上：伝説の勝負師</p>
@@ -75,7 +76,18 @@ function judgement(a,b){
     if(a==b && a==1){ //ゾロ目（１）
         j = '大当たり！メガ１杯無料！';
         // LocalStorageに大当たり回数を加算しておく
-        localStorage.setItem('megatimes',parseInt(localStorage.getItem('megatimes'))+1);
+        let lst = parseInt(localStorage.getItem("megatimes"));
+        console.log(lst);
+        if(Number.isNaN(lst)) {
+            console.log("ないよ");
+            localStorage.setItem('megatimes',"1");
+            // localStorage.setItem('megatimes',parseInt(localStorage.getItem('megatimes'))+1);
+        } else{
+            console.log("あるよ");
+            localStorage.setItem('megatimes',parseInt(localStorage.getItem('megatimes'))+1);
+            // localStorage.setItem('megatimes',1);
+        }
+        
     } else if(a==b){ //ゾロ目（１以外）
         j = '当たり！１杯無料！';
     } else if((a+b)%2==1){ //奇数
@@ -89,7 +101,6 @@ function judgement(a,b){
 // 会員ランク取得
 function getrank(){
     let a = parseInt(localStorage.getItem("megatimes"));
-    console.log(a)
     let r;
     if(a>9){
         r = rank[0];
@@ -118,8 +129,15 @@ function getrank(){
         $("#history").prepend(historyhtml);
         let currentrank = getrank();
         $("#rank").html(currentrank)
-
-        // LocalStorageを初期化する
+        // localstorage判定（NaNじゃないか
+        let megahistory = parseInt(localStorage.getItem("megatimes"));
+        // localStorageがNaNの場合の表示回避
+        if(Number.isNaN(megahistory)){
+            $("#meganow").html(`メガ無料獲得回数：0回`);
+        } else{
+            $("#meganow").html(`メガ無料獲得回数：${localStorage.getItem("megatimes")}回`);
+        }
+        // LocalStorageを初期化するボタン
         $("#reset").on("click",function(){
             localStorage.clear();
             $("#rank").empty();
