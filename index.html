@@ -79,11 +79,11 @@ function judgement(a,b){
         let lst = parseInt(localStorage.getItem("megatimes"));
         console.log(lst);
         if(Number.isNaN(lst)) {
-            console.log("ないよ");
+            //console.log("ないよ");
             localStorage.setItem('megatimes',"1");
             // localStorage.setItem('megatimes',parseInt(localStorage.getItem('megatimes'))+1);
         } else{
-            console.log("あるよ");
+            //console.log("あるよ");
             localStorage.setItem('megatimes',parseInt(localStorage.getItem('megatimes'))+1);
             // localStorage.setItem('megatimes',1);
         }
